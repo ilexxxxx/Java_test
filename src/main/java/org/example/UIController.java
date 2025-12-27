@@ -114,28 +114,28 @@ public class UIController {
             return "// 没有生成有效的代码";
         }
 
-        // 步骤1: 基础清理
+        //  基础清理
         code = basicCleanup(code);
 
-        // 步骤1.5: 专门处理"???"乱码
+        // 专门处理"???"乱码
         code = fixQuestionMarkGarbage(code);
 
-        // 步骤1.6: 专门处理用户提供的示例代码中的特定格式问题
+        //  专门处理用户提供的示例代码中的特定格式问题
         code = fixSpecificFormatIssues(code);
 
-        // 步骤2: 修复关键字和标识符
+        //修复关键字和标识符
         code = fixKeywordsAndIdentifiers(code);
 
-        // 步骤3: 修复花括号和括号
+        //修复花括号和括号
         code = fixBracesAndParentheses(code);
 
-        // 步骤4: 修复语句结束
+        // 修复语句结束
         code = fixStatementEndings(code);
 
-        // 步骤5: 重建代码结构
+        //重建代码结构
         code = rebuildCodeStructure(code);
 
-        // 步骤6: 最终清理和美化
+        // 最终清理和美化
         code = finalPolish(code);
 
         return code;
@@ -281,7 +281,7 @@ public class UIController {
                 "assert", "const", "goto"
         };
 
-        // 在关键字后添加空格（如果后面不是空格或括号）
+        // 在关键字后添加空格
         for (String keyword : keywords) {
             code = code.replaceAll("(?i)" + keyword + "(?![\\s\\(\\{;])", keyword + " ");
         }
@@ -303,21 +303,19 @@ public class UIController {
 
     // 修复花括号和括号
     private String fixBracesAndParentheses(String code) {
-        // 修复左花括号 - 在关键字、方法名等后面加空格
+        // 修复左花括号
         code = code.replaceAll("(?<=\\w)\\{", " {");
         code = code.replaceAll("(?<=\\))\\{", " {");
         code = code.replaceAll("(?<=;)\\{", " {");
 
-        // 修复右花括号 - 前面加空格，后面加空格（除非是行尾）
+        // 修复右花括号
         code = code.replaceAll("(?<!\\s)\\}", " }");
         code = code.replaceAll("\\}(?!\\s|$)", " } ");
 
-        // 修复左括号 - 避免在方法调用时添加空格，如方法名(参数)
         // 只在控制结构(如if, for, while)后添加空格
         code = code.replaceAll("(?<=if|for|while|switch|catch|synchronized)\\(", " (");
         code = code.replaceAll("(?<=if|for|while|switch|catch|synchronized)\\(\\s*", " (");
 
-        // 修复右括号 - 避免在参数列表后添加空格，如方法名(参数)
         // 只在控制结构后添加空格
         code = code.replaceAll("\\)(?=\\s*\\{)", " ");
 
@@ -326,23 +324,23 @@ public class UIController {
 
     // 修复语句结束
     private String fixStatementEndings(String code) {
-        // 修复分号 - 后面加空格（除非是行尾），前面不加空格
+        // 修复分号
         code = code.replaceAll(";(?!\\s|$)", "; ");
         code = code.replaceAll("\\s+;", ";");
 
-        // 修复逗号 - 后面加空格，前面不加空格
+        // 修复逗号
         code = code.replaceAll(",(?!\\s)", ", ");
         code = code.replaceAll("\\s+,", ",");
 
-        // 修复点号（方法调用） - 前后不加空格
+        // 修复点号
         code = code.replaceAll("\\s*\\.\\s*", ".");
 
-        // 修复赋值操作符 - 前后加空格
+        // 修复赋值操作符
         code = code.replaceAll("(?<!==|!=|<=|>=|\\+\\+|--)=(?!=)", " = ");
         code = code.replaceAll("(?<![\\s\\+\\-\\*/%&|^<>!])==(?![=])", " == ");
         code = code.replaceAll("(?<![\\s!])!=(?![=])", " != ");
 
-        // 修复其他操作符 - 前后加空格
+        // 修复其他操作符
         String[] operators = {"\\+", "-", "\\*", "/", "%", "<=", ">=", "&&", "\\|\\|", "\\+\\+", "--"};
         for (String op : operators) {
             code = code.replaceAll("(?<![\\s" + op + "])" + op + "(?![\\s" + op + "])", " " + op + " ");

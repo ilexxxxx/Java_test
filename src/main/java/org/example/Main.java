@@ -32,10 +32,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         // 添加启动日志
-        System.out.println("========================================");
         System.out.println("AI JavaFX 代码生成器启动");
-        System.out.println("版本: 1.0.0");
-        System.out.println("========================================");
 
         // 检查API配置
         checkAPIConfig();
@@ -62,21 +59,19 @@ public class Main extends Application {
                     apiKey.equals("4b20a2a894a67bcc7a419fb193350b11");
 
             if (isDefaultConfig) {
-                System.out.println("⚠️  警告：请配置有效的API密钥");
+                System.out.println("  警告：请配置有效的API密钥");
                 System.out.println("请在 SparkClient.java 中更新您的API配置：");
-                System.out.println("1. APP_ID: 您的讯飞应用ID");
-                System.out.println("2. API_KEY: 您的API密钥");
-                System.out.println("3. API_SECRET: 您的API密钥");
+
             } else {
-                System.out.println("✅ API配置检查通过");
+                System.out.println(" API配置检查通过");
             }
 
         } catch (NoSuchFieldException e) {
-            System.out.println("⚠️  无法访问SparkClient配置字段: " + e.getMessage());
+            System.out.println("  无法访问SparkClient配置字段: " + e.getMessage());
         } catch (IllegalAccessException e) {
-            System.out.println("⚠️  无法访问SparkClient私有字段: " + e.getMessage());
+            System.out.println("  无法访问SparkClient私有字段: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("⚠️  API配置检查异常: " + e.getMessage());
+            System.out.println("  API配置检查异常: " + e.getMessage());
         }
     }
 }
